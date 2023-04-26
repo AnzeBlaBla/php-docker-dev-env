@@ -1,3 +1,77 @@
+# Nginx PHP MySQL [![Build Status](https://travis-ci.org/nanoninja/docker-nginx-php-mysql.svg?branch=master)](https://travis-ci.org/nanoninja/docker-nginx-php-mysql) [![GitHub version](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql.svg)](https://badge.fury.io/gh/nanoninja%2Fdocker-nginx-php-mysql)
+
+Docker running Nginx, PHP-FPM, Composer, MySQL and PHPMyAdmin.
+
+## Overview
+
+1. [Install prerequisites](#install-prerequisites)
+
+    Before installing project make sure the following prerequisites have been met.
+
+2. [Clone the project](#clone-the-project)
+
+    We’ll download the code from its repository on GitHub.
+
+3. [Configure Nginx With SSL Certificates](#configure-nginx-with-ssl-certificates) [`Optional`]
+
+    We'll generate and configure SSL certificate for nginx before running server.
+
+4. [Configure Xdebug](#configure-xdebug) [`Optional`]
+
+    We'll configure Xdebug for IDE (PHPStorm or Netbeans).
+
+5. [Run the application](#run-the-application)
+
+    By this point we’ll have all the project pieces in place.
+
+6. [Use Makefile](#use-makefile) [`Optional`]
+
+    When developing, you can use `Makefile` for doing recurrent operations.
+
+7. [Use Docker Commands](#use-docker-commands)
+
+    When running, you can use docker commands for doing recurrent operations.
+
+___
+
+## Install prerequisites
+
+To run the docker commands without using **sudo** you must add the **docker** group to **your-user**:
+
+```
+sudo usermod -aG docker your-user
+```
+
+For now, this project has been mainly created for Unix `(Linux/MacOS)`. Perhaps it could work on Windows.
+
+All requisites should be available for your distribution. The most important are :
+
+* [Git](https://git-scm.com/downloads)
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker Compose](https://docs.docker.com/compose/install/)
+
+Check if `docker-compose` is already installed by entering the following command : 
+
+```sh
+which docker-compose
+```
+
+Check Docker Compose compatibility :
+
+* [Compose file version 3 reference](https://docs.docker.com/compose/compose-file/)
+
+The following is optional but makes life more enjoyable :
+
+```sh
+which make
+```
+
+On Ubuntu and Debian these are available in the meta-package build-essential. On other distributions, you may need to install the GNU C++ compiler separately.
+
+```sh
+sudo apt install build-essential
+```
+
 ### Images to use
 
 * [Nginx](https://hub.docker.com/_/nginx/)
@@ -19,6 +93,20 @@ This project use the following ports :
 | Nginx SSL  | 3000 |
 
 ___
+
+## Clone the project
+
+To install [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git), download it and install following the instructions :
+
+```sh
+git clone https://github.com/nanoninja/docker-nginx-php-mysql.git
+```
+
+Go to the project directory :
+
+```sh
+cd docker-nginx-php-mysql
+```
 
 ### Project tree
 
