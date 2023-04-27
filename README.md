@@ -6,3 +6,8 @@ docker-nginx-php-mysql](https://github.com/nanoninja/docker-nginx-php-mysql), bu
 I have not tested the Makefile or Travis CI yet.
 
 You can read the [original README here](old_README.md).
+
+## Todo
+
+- [ ] Test Makefile or implement alternative
+- [ ] Add support for SQL migrations or something like that
