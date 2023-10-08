@@ -22,5 +22,11 @@ nbproject/
 # VSCode
 .vscode/
 
+localdev/
+
 # SSL Certs
-etc/ssl/
+etc/ssl/**
+!etc/ssl/.gitkeep
+
+
+.env

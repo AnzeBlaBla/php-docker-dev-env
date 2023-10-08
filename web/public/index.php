@@ -1,4 +1,9 @@
 <?php
 
+include __DIR__ . '/../app/init.php';
 
-phpinfo();
+
+// Example to get a connection to DB:
+// $conn = Connection::getConnection();
+
+echo "Hello World from web/public/index.php!";

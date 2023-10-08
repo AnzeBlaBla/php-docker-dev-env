@@ -1,13 +1,11 @@
-# PHP Development environment using Docker
+# PHP Docker development environment
 
-I copied most of the configs from [nanoninja /
-docker-nginx-php-mysql](https://github.com/nanoninja/docker-nginx-php-mysql), but I am using the official php images in addition to getting xdebug working (on VS Code, Windows 11, Docker Desktop with WSL2).
+This is a docker development environment for PHP projects.
 
-I have not tested the Makefile or Travis CI yet.
+## Running
 
-You can read the [original README here](old_README.md).
+To run the environment, run the following command:
 
-## Todo
-
-- [ ] Test Makefile or implement alternative
-- [ ] Add support for SQL migrations or something like that
+```bash
+docker-compose up -d
+```
