@@ -4,12 +4,12 @@ services:
         image: nginx:alpine
         volumes:
             - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-            - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
-            - "./etc/ssl:/etc/ssl"
-            - "./web:/var/www/html"
+            - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template" # TODO: ssl
+            - "./etc/ssl:/etc/ssl" # TODO: add instead of volumes?
+            - "./web:/var/www/html" # TODO: add instead of volumes?
         ports:
-            - "8000:80"
-            - "8001:443"
+            - "80:80"
+            - "443:443"
         environment:
             - NGINX_HOST=${NGINX_HOST}
         command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
@@ -28,32 +28,23 @@ services:
             dockerfile: php.Dockerfile
             args:
                 - PHP_VERSION=${PHP_VERSION}
+        container_name: php
         env_file:
-            - ".env"
+            - ".production.env"
         restart: always
         volumes:
-            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
-            - "./web:/var/www/html"
-        links:
-            - mysql:${MYSQL_HOST}
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        ports:
-            - "8002:80"
-        environment:
-            - PMA_HOST=mysql
-        restart: always
-        depends_on:
-            - mysql
+            - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini" # TODO: add instead of volumes
+            - "./web:/var/www/html" # TODO: add instead of volumes
     mysql:
         image: mysql:${MYSQL_VERSION}
+        container_name: ${MYSQL_HOST}
         restart: always
         env_file:
-            - ".env"
+            - ".production.env"
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         volumes:
-            - "./data/db/mysql:/var/lib/mysql"
+            - "./data/db/mysql:/var/lib/mysql" # TODO: named volume?
