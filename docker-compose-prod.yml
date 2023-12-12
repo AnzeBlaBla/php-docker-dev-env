@@ -21,7 +21,7 @@ services:
         image: "composer"
         volumes:
             - "./web/app:/app"
-        command: install
+        command: install --ignore-platform-reqs
     php:
         build:
             context: ./etc/docker
@@ -30,17 +30,21 @@ services:
                 - PHP_VERSION=${PHP_VERSION}
         container_name: php
         env_file:
-            - ".production.env"
+            - ".env"
         restart: always
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini" # TODO: add instead of volumes
             - "./web:/var/www/html" # TODO: add instead of volumes
     mysql:
-        image: mysql:${MYSQL_VERSION}
+        build:
+            context: ./etc/docker
+            dockerfile: mysql.Dockerfile
+            args:
+                - MYSQL_VERSION=${MYSQL_VERSION}            
         container_name: ${MYSQL_HOST}
         restart: always
         env_file:
-            - ".production.env"
+            - ".env"
         environment:
             - MYSQL_DATABASE=${MYSQL_DATABASE}
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
