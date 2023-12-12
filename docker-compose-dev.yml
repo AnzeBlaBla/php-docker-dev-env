@@ -1,9 +1,10 @@
 version: '3'
 services:
     web:
-        image: nginx:alpine
+        build:
+            context: .
+            dockerfile: etc/docker/nginx.Dockerfile
         volumes:
-            - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
             - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
             - "./etc/ssl:/etc/ssl"
             - "./web:/var/www/html"
@@ -12,7 +13,6 @@ services:
             - "8001:443"
         environment:
             - NGINX_HOST=${NGINX_HOST}
-        command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
         restart: always
         depends_on:
             - php
@@ -20,12 +20,14 @@ services:
     composer:
         image: "composer"
         volumes:
-            - "./web/app:/app"
+            - "./web/app/composer.json:/app/composer.json"
+            - "./web/app/composer.lock:/app/composer.lock"
+            - vendor:/app/vendor
         command: install --ignore-platform-reqs
     php:
         build:
-            context: ./etc/docker
-            dockerfile: php.Dockerfile
+            context: .
+            dockerfile: etc/docker/php.Dockerfile
             args:
                 - PHP_VERSION=${PHP_VERSION}
         container_name: php
@@ -35,6 +37,9 @@ services:
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "./web:/var/www/html"
+            - vendor:/var/www/html/app/vendor
+        depends_on:
+            - mysql
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
@@ -47,8 +52,8 @@ services:
             - mysql
     mysql:
         build:
-            context: ./etc/docker
-            dockerfile: mysql.Dockerfile
+            context: .
+            dockerfile: etc/docker/mysql.Dockerfile
             args:
                 - MYSQL_VERSION=${MYSQL_VERSION}
         container_name: ${MYSQL_HOST}
@@ -64,3 +69,6 @@ services:
             - "8989:3306"
         volumes:
             - "./data/db/mysql:/var/lib/mysql"
+
+volumes:
+    vendor:
